@@ -1,0 +1,17 @@
+# --- document parsing: primary (fast) + secondary (OCR-capable) fallback ---
+firecrawl-anydoc   # imports as `anydoc`
+docling
+
+# --- columnar storage for the loader's output dataset ---
+pyarrow
+
+# --- typed, .env-driven configuration ---
+pydantic
+pydantic-settings
+
+# --- magic-byte file type sniffing (mime-mismatch guard) ---
+filetype
+
+# --- web server ---
+fastapi
+uvicorn
