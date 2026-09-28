@@ -1,5 +1,29 @@
+from scripts.backend.backend_settings import settings
+
+
+
+
 
 def load_local_files() -> dict:
+
+    # initialise_loading_process -> creates a new .sqlite file, opens it, 
+    # fetch local files path-> check if file in FILE_CONTRACT
+
+    # for all files in local_files :
+        #read it in byte format, send to primary_data_parser(), secondary_data_parser()
+
+        # amalgmate results using choose_data_to_load into final_data_content
+
+        # create DataLoaderObject and pur all the data in it
+
+        # push into sqlite 
+
+    #
+
+    #close .sqlite safely
+
+
+
     total_file_read = 10
     skipped_file = 3
     parsed_file = 7
