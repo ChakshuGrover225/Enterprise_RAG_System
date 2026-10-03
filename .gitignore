@@ -1,3 +1,6 @@
 .env
 
 input_backend_data
+
+# ingestion output
+scripts/backend/ingestion/output/

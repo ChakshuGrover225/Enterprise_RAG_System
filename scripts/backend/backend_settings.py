@@ -1,20 +1,15 @@
 from pydantic import BaseModel
 
-class LoadDataClass(BaseModel):
-    text_content : str = ""
-    metadata : dict = {}
+
+class loaderSettingClass(BaseModel):
+    database_file_Path:str = r"F:\project\Portofolio Projects\RAG in Production\Enterprise_RAG_System\input_backend_data\data_source"
+    acceptable_file_agreement: list[str] = ['pdf', 'xlsx', 'docx', 'txt', 'md']
+    json_save_path : str = r"scripts/backend/ingestion/output/loaded_document.json"
+
+class backendSettingClass(BaseModel):
+    loaderSettings: loaderSettingClass = loaderSettingClass()
+
+settings = backendSettingClass()
 
 
-class LoaderSettingClass():
-    path_to_local_file_storage = r'input_backend_data\data_source'
 
-
-
-class SettingClass():
-    loader_setting = LoaderSettingClass()
-
-
-settings = SettingClass()
-
-
-print(f"{'\t'*4}settings import right in Package")
