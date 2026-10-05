@@ -1,17 +1,21 @@
 print("entered rag ingesition pipeline")
 
-from scripts.backend.ingestion import loader, chunker, embedder
 
+indentation = '--- --- '*1
+from scripts.backend.ingestion import loader, chunker, embedder
+import time
 
 
 # load documents
 
+try:
+    #loader.load_document()
+    #print(f"{indentation}Loaded document SUCCESSFULLY")
+    pass
 
-loader.load_document()
-
-
-
-
+except Exception as e:
+    pass
+    #print(f"{indentation}error in Loader.load_document {e}")
 
 # -----------------------------------------------------
 
@@ -19,9 +23,15 @@ loader.load_document()
 
 # chunk documents
 try:
-    pass
+    chunker.chunk_documents(batch_size = 5)
+    
+    
 except Exception as e:
-    print()
+    print(f"{indentation}failed Chunking {e}")
+
+
+
+''' 
 #preprocess documents
 try:
     pass
@@ -39,3 +49,5 @@ except Exception as e:
     print()
 # present logs
 
+
+'''
