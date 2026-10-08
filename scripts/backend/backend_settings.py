@@ -16,7 +16,10 @@ class chunkObjectClass(BaseModel):
         "mode_of_parse" : None,
         "tokens" : None,
         "chunk_type" : None,
-        "parent_id" : None
+        "parent_id" : None,
+        "summary" : None,
+        "embedding_vector" : None,
+        "embedding_vector_name" : None
 
     }
 
@@ -34,10 +37,17 @@ class chunkerSettingClass(BaseModel):
 
 
 
+class embedderSettingClass(BaseModel):
+    chunked_documents_save_path : str = chunkerSettingClass().chunked_documents_save_path
+    embedding_model_name : str = "multi-qa-mpnet-base-dot-v1"
+    embedding_model_save_path : str = "scripts/backend/ingestion/output"
+
 class backendSettingClass(BaseModel):
     loaderSettings: loaderSettingClass = loaderSettingClass()
     chunkerSettings: chunkerSettingClass = chunkerSettingClass()
     chunkObject: chunkObjectClass = chunkObjectClass()
+    embedderSettings: embedderSettingClass = embedderSettingClass()
+
 
 
 settings = backendSettingClass()

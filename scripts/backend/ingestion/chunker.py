@@ -258,6 +258,9 @@ def create_parent_chunk(batch_of_docs: list[dict]) -> List[chunkObjectClass]:
                         "tokens": count_tokens(chunk_text),
                         "chunk_type": "parent",
                         "parent_id": None,
+                        "summary": None,
+                        "embedding_vector" : None,
+                        "embedding_vector_name" : None
                     },
                 ))
 
@@ -283,6 +286,9 @@ def create_child_chunks(parent_chunks: List[chunkObjectClass]) -> List[chunkObje
                     "tokens": count_tokens(chunk_text),
                     "chunk_type": "child",
                     "parent_id": parent.metadata.get("uuid"),
+                    "summary": None,
+                    "embedding_vector" : None,
+                    "embedding_vector_name" : None
                 },
             ))
 
