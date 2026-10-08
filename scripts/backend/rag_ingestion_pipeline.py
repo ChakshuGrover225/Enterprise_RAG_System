@@ -1,7 +1,7 @@
 print("entered rag ingesition pipeline")
 
 indentation = '--- --- '*1
-from scripts.backend.ingestion import loader, chunker, embedder
+from scripts.backend.ingestion import loader, chunker, embedder, vector_db
 from scripts.backend import execution_statistics
 import time
 
@@ -10,7 +10,6 @@ execution_statistics.start()
 
 
 
-'''
 
 # load documents
 
@@ -35,31 +34,23 @@ try:
 except Exception as e:
     print(f"{indentation}failed Chunking {e}")
  
-'''
 
-#preprocess documents
-try:
-    pass
-except Exception as e:
-    print()
+
+
 #embed document
 try:
     embedder.embed_documents(  chunk_batch_size= 30 )
-    pass #         embedder.print_value(2)
+
 except Exception as e:
     print()
 
 
 
 
-
-
-
-
-'''
-
 #add chunks in vector Database
 try:
+    vector_db_stats = vector_db.add_to_vector_db()
+    print(f"{indentation} Added: {vector_db_stats['added_record_count']}   total: {vector_db_stats['total_record_count']} ")
     pass
 except Exception as e:
     print()
@@ -67,7 +58,6 @@ except Exception as e:
 
 
 
-'''
 
 
 # print stats from execution_stats.py here in last

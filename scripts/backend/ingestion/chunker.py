@@ -15,8 +15,6 @@ import sqlite3
 import tiktoken
 
 
-print(f"{indentation}IMPORTED chunker")
-
 from scripts.backend.backend_settings import settings, chunkObjectClass
 
 

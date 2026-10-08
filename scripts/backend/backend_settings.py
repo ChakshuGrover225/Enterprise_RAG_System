@@ -42,11 +42,17 @@ class embedderSettingClass(BaseModel):
     embedding_model_name : str = "multi-qa-mpnet-base-dot-v1"
     embedding_model_save_path : str = "scripts/backend/ingestion/output"
 
+
+class vectordbSettingClass(BaseModel):
+    vector_db_save_path : str = r"scripts/backend/ingestion/output/vector_db"
+    collection_name : str = "rag_chunks"
+
 class backendSettingClass(BaseModel):
     loaderSettings: loaderSettingClass = loaderSettingClass()
     chunkerSettings: chunkerSettingClass = chunkerSettingClass()
     chunkObject: chunkObjectClass = chunkObjectClass()
     embedderSettings: embedderSettingClass = embedderSettingClass()
+    vectordbSettings: vectordbSettingClass = vectordbSettingClass()
 
 
 

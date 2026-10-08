@@ -5,7 +5,7 @@ start_time = time.time()
 def _lap() -> str:
     return f"{time.time() - start_time:.2f}s"
 
-print(f"[{_lap()}]------------enter loader")
+
 
 from queue import Queue
 files_ready_to_load = Queue()

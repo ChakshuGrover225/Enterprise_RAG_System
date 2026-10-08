@@ -86,7 +86,7 @@ def start(sample_interval: float = 0.2) -> None:
     snapshot.sampler_thread.start()
 
     _active = snapshot
-    print(f"[execution_statistics] tracking started (pid={process.pid})")
+    print(f"==================[execution_statistics] tracking started (pid={process.pid})=================\n\n")
 
 
 def report() -> dict:
@@ -120,7 +120,7 @@ def report() -> dict:
         "project_disk_delta_mb": round(disk_delta / (1024 ** 2), 1),
     }
 
-    print("============ execution_statistics ===================")
+    print("\n\n============ execution_statistics ===================")
     for key, value in stats.items():
         print(f"  {key}: {value}")
 
