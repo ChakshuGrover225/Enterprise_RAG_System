@@ -8,6 +8,7 @@ def _lap() -> str:
 from scripts.backend.backend_settings import settings
 from pathlib import Path
 import json
+import shutil
 import sqlite3
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
@@ -28,6 +29,39 @@ def initialise_vector_db() -> Path:
         return None
 
     return vector_db_path
+
+
+_collection_reset_this_run = False
+
+
+def _reset_collection_once(client: QdrantClient, collection_name: str, vector_size: int) -> None:
+    """Wipe and recreate the collection once per process - mirrors the loader/chunker's own
+    truncate-and-rebuild convention (secure_json_dump's O_TRUNC, chunker's db_path.unlink), so a
+    fresh pipeline run reflects only the current chunked_document.db instead of accumulating
+    stale points under every previous run's (randomly regenerated) chunk uuids.
+    """
+    global _collection_reset_this_run
+    if _collection_reset_this_run:
+        return
+    if client.collection_exists(collection_name):
+        client.delete_collection(collection_name)
+        # ponytail: on Windows, qdrant-client's local-mode delete_collection() can return before
+        # the OS actually releases the storage file, so create_collection() below would silently
+        # reattach to the stale on-disk data instead of starting fresh. Poll briefly for the
+        # directory to actually disappear before forcing it. If this still flakes in practice,
+        # the real fix is a fresh per-run collection name instead of reusing and deleting one.
+        stale_dir = Path(settings.vectordbSettings.vector_db_save_path) / "collection" / collection_name
+        for _ in range(10):
+            if not stale_dir.exists():
+                break
+            time.sleep(0.2)
+        else:
+            shutil.rmtree(stale_dir, ignore_errors=True)
+    client.create_collection(
+        collection_name=collection_name,
+        vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
+    )
+    _collection_reset_this_run = True
 
 
 def add_chunks_to_vector() -> dict:
@@ -69,12 +103,8 @@ def add_chunks_to_vector() -> dict:
             client = QdrantClient(path=str(vector_db_path))
             try:
                 collection_name = settings.vectordbSettings.collection_name
-                if not client.collection_exists(collection_name):
-                    client.create_collection(
-                        collection_name=collection_name,
-                        # DOT matches multi-qa-mpnet-base-dot-v1, the dot-product-trained model in embedderSettings
-                        vectors_config=VectorParams(size=len(points[0].vector), distance=Distance.DOT),
-                    )
+                # DOT matches multi-qa-mpnet-base-dot-v1, the dot-product-trained model in embedderSettings
+                _reset_collection_once(client, collection_name, len(points[0].vector))
                 client.upsert(collection_name=collection_name, points=points)
                 added_record_count = len(points)
             finally:
