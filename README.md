@@ -289,6 +289,8 @@ real SharePoint/Drive/OneNote connectors, and consolidating the two dependency s
 ## Challenges & Decisions Log
 
 ### Vector store accumulated stale points across ingestion runs
+
+![alt text](readme-images/image.png)
 **Problem:** The chunker assigns a brand-new random `uuid` to every chunk on every run, but
 `vector_db.py` only ever upserted into the Qdrant collection and never cleared it — so re-running
 ingestion kept adding points under new IDs instead of replacing the old ones. A UAT run caught this
